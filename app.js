@@ -57,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayClothingRecommendations(data) {
         const recommendationsDiv = document.createElement('div');
         const temp = data.current_weather.temperature;
+        const windSpeed = data.current_weather.windspeed;
+        const weatherCode = data.current_weather.weathercode;
 
         let recommendations = '';
 
@@ -66,6 +68,16 @@ document.addEventListener('DOMContentLoaded', () => {
             recommendations = 'Wear a light jacket or sweater.';
         } else {
             recommendations = 'Wear light clothes like a t-shirt and shorts.';
+        }
+
+        if (windSpeed > 20) {
+            recommendations += ' It is windy, consider wearing windproof clothing.';
+        }
+
+        if (weatherCode === 'rain') {
+            recommendations += ' It is raining, wear waterproof clothing and carry an umbrella.';
+        } else if (weatherCode === 'snow') {
+            recommendations += ' It is snowing, wear warm and waterproof clothing.';
         }
 
         recommendationsDiv.innerHTML = `

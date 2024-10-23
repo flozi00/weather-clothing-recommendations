@@ -20,3 +20,14 @@ p {
 .recommendations {
     margin-top: 20px;
 }
+
+/* Ensure the design is responsive and works well on both desktop and mobile devices */
+@media (max-width: 600px) {
+    #app {
+        margin: 10px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+}
