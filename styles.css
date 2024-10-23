@@ -1,0 +1,22 @@
+#app {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+}
+
+h2 {
+    color: #333;
+}
+
+p {
+    font-size: 18px;
+    color: #666;
+}
+
+.weather {
+    margin-bottom: 20px;
+}
+
+.recommendations {
+    margin-top: 20px;
+}
