@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayWeatherData(data) {
         const weatherDiv = document.createElement('div');
+        weatherDiv.className = 'weather';
         weatherDiv.innerHTML = `
             <h2>Weather in your location</h2>
             <p>Temperature: ${data.current_weather.temperature}°C</p>
@@ -56,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayClothingRecommendations(data) {
         const recommendationsDiv = document.createElement('div');
+        recommendationsDiv.className = 'recommendations';
         const temp = data.current_weather.temperature;
         const windSpeed = data.current_weather.windspeed;
         const weatherCode = data.current_weather.weathercode;
