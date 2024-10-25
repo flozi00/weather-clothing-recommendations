@@ -47,10 +47,41 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayWeatherData(data) {
         const weatherDiv = document.createElement('div');
         weatherDiv.className = 'weather';
+        const weatherIcons = {
+            0: '☀️', // Clear sky
+            1: '🌤️', // Mainly clear
+            2: '⛅', // Partly cloudy
+            3: '☁️', // Overcast
+            45: '🌫️', // Fog
+            48: '🌫️', // Depositing rime fog
+            51: '🌦️', // Drizzle: Light
+            53: '🌦️', // Drizzle: Moderate
+            55: '🌦️', // Drizzle: Dense intensity
+            56: '🌧️', // Freezing Drizzle: Light
+            57: '🌧️', // Freezing Drizzle: Dense intensity
+            61: '🌧️', // Rain: Slight
+            63: '🌧️', // Rain: Moderate
+            65: '🌧️', // Rain: Heavy intensity
+            66: '🌨️', // Freezing Rain: Light
+            67: '🌨️', // Freezing Rain: Heavy intensity
+            71: '❄️', // Snow fall: Slight
+            73: '❄️', // Snow fall: Moderate
+            75: '❄️', // Snow fall: Heavy intensity
+            77: '❄️', // Snow grains
+            80: '🌧️', // Rain showers: Slight
+            81: '🌧️', // Rain showers: Moderate
+            82: '🌧️', // Rain showers: Violent
+            85: '❄️', // Snow showers slight
+            86: '❄️', // Snow showers heavy
+            95: '⛈️', // Thunderstorm: Slight or moderate
+            96: '⛈️', // Thunderstorm with slight hail
+            99: '⛈️'  // Thunderstorm with heavy hail
+        };
+        const weatherIcon = weatherIcons[data.current_weather.weathercode] || '❓';
         weatherDiv.innerHTML = `
             <h2>Weather in your location</h2>
             <p>Temperature: ${data.current_weather.temperature}°C</p>
-            <p>Weather: ${data.current_weather.weathercode}</p>
+            <p>Weather: ${weatherIcon}</p>
         `;
         app.appendChild(weatherDiv);
     }
@@ -76,9 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
             recommendations += ' It is windy, consider wearing windproof clothing.';
         }
 
-        if (weatherCode === 'rain') {
+        if (weatherCode >= 51 && weatherCode <= 67) {
             recommendations += ' It is raining, wear waterproof clothing and carry an umbrella.';
-        } else if (weatherCode === 'snow') {
+        } else if (weatherCode >= 71 && weatherCode <= 77) {
             recommendations += ' It is snowing, wear warm and waterproof clothing.';
         }
 

@@ -31,3 +31,54 @@ p {
         font-size: 16px;
     }
 }
+
+/* Use custom fonts and colors to make the text more readable and visually appealing */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: #444;
+}
+
+/* Add background images or gradients that change based on the weather conditions */
+body.sunny {
+    background: linear-gradient(to bottom, #ffeb3b, #ff9800);
+}
+
+body.rainy {
+    background: linear-gradient(to bottom, #4fc3f7, #0288d1);
+}
+
+body.snowy {
+    background: linear-gradient(to bottom, #e0f7fa, #00acc1);
+}
+
+body.cloudy {
+    background: linear-gradient(to bottom, #cfd8dc, #607d8b);
+}
+
+/* Add animations or transitions to make the user interface more interactive and engaging */
+.weather, .recommendations {
+    transition: all 0.3s ease-in-out;
+}
+
+.weather:hover, .recommendations:hover {
+    transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.weather, .recommendations {
+    animation: fadeIn 1s ease-in-out;
+}
