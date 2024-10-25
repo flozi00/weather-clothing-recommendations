@@ -79,9 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const weatherIcon = weatherIcons[data.current_weather.weathercode] || '❓';
         weatherDiv.innerHTML = `
-            <h2>Weather in your location</h2>
-            <p>Temperature: ${data.current_weather.temperature}°C</p>
-            <p>Weather: ${weatherIcon}</p>
+            <h2>Wetter an Ihrem Standort</h2>
+            <p>Temperatur: ${data.current_weather.temperature}°C</p>
+            <p>Wetter: ${weatherIcon}</p>
         `;
         app.appendChild(weatherDiv);
     }
@@ -96,25 +96,25 @@ document.addEventListener('DOMContentLoaded', () => {
         let recommendations = '';
 
         if (temp < 10) {
-            recommendations = 'Wear warm clothes like a coat, scarf, and gloves.';
+            recommendations = 'Tragen Sie warme Kleidung wie einen Mantel, Schal und Handschuhe.';
         } else if (temp >= 10 && temp < 20) {
-            recommendations = 'Wear a light jacket or sweater.';
+            recommendations = 'Tragen Sie eine leichte Jacke oder einen Pullover.';
         } else {
-            recommendations = 'Wear light clothes like a t-shirt and shorts.';
+            recommendations = 'Tragen Sie leichte Kleidung wie ein T-Shirt und Shorts.';
         }
 
         if (windSpeed > 20) {
-            recommendations += ' It is windy, consider wearing windproof clothing.';
+            recommendations += ' Es ist windig, ziehen Sie winddichte Kleidung in Betracht.';
         }
 
         if (weatherCode >= 51 && weatherCode <= 67) {
-            recommendations += ' It is raining, wear waterproof clothing and carry an umbrella.';
+            recommendations += ' Es regnet, tragen Sie wasserdichte Kleidung und nehmen Sie einen Regenschirm mit.';
         } else if (weatherCode >= 71 && weatherCode <= 77) {
-            recommendations += ' It is snowing, wear warm and waterproof clothing.';
+            recommendations += ' Es schneit, tragen Sie warme und wasserdichte Kleidung.';
         }
 
         recommendationsDiv.innerHTML = `
-            <h2>Clothing Recommendations</h2>
+            <h2>Kleidungsempfehlungen</h2>
             <p>${recommendations}</p>
         `;
         app.appendChild(recommendationsDiv);
