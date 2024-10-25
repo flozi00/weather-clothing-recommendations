@@ -93,47 +93,52 @@ document.addEventListener('DOMContentLoaded', () => {
         const windSpeed = data.current_weather.windspeed;
         const weatherCode = data.current_weather.weathercode;
 
-        let recommendations = '';
+        const layer1 = document.createElement('div');
+        layer1.className = 'layer';
+        const layer2 = document.createElement('div');
+        layer2.className = 'layer';
+        const layer3 = document.createElement('div');
+        layer3.className = 'layer';
 
         // Layer 1: Unterwäsche
         if (temp < 5) {
-            recommendations += 'Schicht 1: Thermo-Unterwäsche, Thermo-Socken. ';
+            layer1.innerHTML = '<h3>Schicht 1: Unterwäsche</h3><p>Thermo-Unterwäsche, Thermo-Socken</p>';
         } else {
-            recommendations += 'Schicht 1: Normale Unterwäsche, Socken. ';
+            layer1.innerHTML = '<h3>Schicht 1: Unterwäsche</h3><p>Normale Unterwäsche, Socken</p>';
         }
 
         // Layer 2: Alltagswäsche
         if (temp < 10) {
-            recommendations += 'Schicht 2: Langärmliges Shirt, Pullover, lange Hose. ';
+            layer2.innerHTML = '<h3>Schicht 2: Alltagswäsche</h3><p>Langärmliges Shirt, Pullover, lange Hose</p>';
         } else if (temp >= 10 && temp < 20) {
-            recommendations += 'Schicht 2: Kurzärmliges Shirt, leichte Jacke, lange Hose. ';
+            layer2.innerHTML = '<h3>Schicht 2: Alltagswäsche</h3><p>Kurzärmliges Shirt, leichte Jacke, lange Hose</p>';
         } else {
-            recommendations += 'Schicht 2: T-Shirt, Shorts oder Rock/Kleid. ';
+            layer2.innerHTML = '<h3>Schicht 2: Alltagswäsche</h3><p>T-Shirt, Shorts oder Rock/Kleid</p>';
         }
 
         // Layer 3: Außenkleidung
         if (temp < 10) {
-            recommendations += 'Schicht 3: Winterjacke, Winterschuhe, Schal, Handschuhe, Mütze. ';
+            layer3.innerHTML = '<h3>Schicht 3: Außenkleidung</h3><p>Winterjacke, Winterschuhe, Schal, Handschuhe, Mütze</p>';
         } else if (temp >= 10 && temp < 20) {
-            recommendations += 'Schicht 3: Leichte Jacke, Sportschuhe. ';
+            layer3.innerHTML = '<h3>Schicht 3: Außenkleidung</h3><p>Leichte Jacke, Sportschuhe</p>';
         } else {
-            recommendations += 'Schicht 3: Keine Jacke, Sandalen. ';
+            layer3.innerHTML = '<h3>Schicht 3: Außenkleidung</h3><p>Keine Jacke, Sandalen</p>';
         }
 
         if (windSpeed > 20) {
-            recommendations += 'Es ist windig, ziehen Sie winddichte Kleidung in Betracht. ';
+            layer3.innerHTML += '<p>Es ist windig, ziehen Sie winddichte Kleidung in Betracht</p>';
         }
 
         if (weatherCode >= 51 && weatherCode <= 67) {
-            recommendations += 'Es regnet, tragen Sie wasserdichte Kleidung und nehmen Sie einen Regenschirm mit. ';
+            layer3.innerHTML += '<p>Es regnet, tragen Sie wasserdichte Kleidung und nehmen Sie einen Regenschirm mit</p>';
         } else if (weatherCode >= 71 && weatherCode <= 77) {
-            recommendations += 'Es schneit, tragen Sie warme und wasserdichte Kleidung. ';
+            layer3.innerHTML += '<p>Es schneit, tragen Sie warme und wasserdichte Kleidung</p>';
         }
 
-        recommendationsDiv.innerHTML = `
-            <h2>Kleidungsempfehlungen</h2>
-            <p>${recommendations}</p>
-        `;
+        recommendationsDiv.appendChild(layer1);
+        recommendationsDiv.appendChild(layer2);
+        recommendationsDiv.appendChild(layer3);
+
         app.appendChild(recommendationsDiv);
     }
 });

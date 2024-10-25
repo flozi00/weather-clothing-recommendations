@@ -159,3 +159,12 @@ button {
 button:hover {
     background-color: #555;
 }
+
+/* Add styles for the layerwise UI to show clothing recommendations */
+.layer {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+}
