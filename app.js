@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 displayWeatherData(data);
                 displayClothingRecommendations(data);
+                displayDetailedWeatherInfo(data);
             })
             .catch(error => {
                 app.innerHTML = "Error fetching weather data.";
@@ -140,5 +141,22 @@ document.addEventListener('DOMContentLoaded', () => {
         recommendationsDiv.appendChild(layer3);
 
         app.appendChild(recommendationsDiv);
+    }
+
+    function displayDetailedWeatherInfo(data) {
+        const detailedWeatherDiv = document.createElement('div');
+        detailedWeatherDiv.id = 'detailed-weather-info';
+        detailedWeatherDiv.innerHTML = `
+            <h2>Detaillierte Wetterinformationen</h2>
+            <p>Maximale Temperatur: ${data.daily.temperature_2m_max[0]}°C</p>
+            <p>Minimale Temperatur: ${data.daily.temperature_2m_min[0]}°C</p>
+            <p>Gefühlte maximale Temperatur: ${data.daily.apparent_temperature_max[0]}°C</p>
+            <p>Gefühlte minimale Temperatur: ${data.daily.apparent_temperature_min[0]}°C</p>
+            <p>Sonnenaufgang: ${data.daily.sunrise[0]}</p>
+            <p>Sonnenuntergang: ${data.daily.sunset[0]}</p>
+            <p>Tageslichtdauer: ${data.daily.daylight_duration[0]} Stunden</p>
+            <p>Niederschlagssumme: ${data.daily.precipitation_sum[0]} mm</p>
+        `;
+        app.appendChild(detailedWeatherDiv);
     }
 });
