@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const lon = position.coords.longitude;
 
         // Fetch weather data from the Open-Meteo API using the user's location
-        const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+        const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,daylight_duration,precipitation_sum`;
 
         fetch(apiUrl)
             .then(response => response.json())
