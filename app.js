@@ -95,22 +95,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let recommendations = '';
 
-        if (temp < 10) {
-            recommendations = 'Tragen Sie warme Kleidung wie einen Mantel, Schal und Handschuhe.';
-        } else if (temp >= 10 && temp < 20) {
-            recommendations = 'Tragen Sie eine leichte Jacke oder einen Pullover.';
+        // Layer 1: Unterwäsche
+        if (temp < 5) {
+            recommendations += 'Schicht 1: Thermo-Unterwäsche, Thermo-Socken. ';
         } else {
-            recommendations = 'Tragen Sie leichte Kleidung wie ein T-Shirt und Shorts.';
+            recommendations += 'Schicht 1: Normale Unterwäsche, Socken. ';
+        }
+
+        // Layer 2: Alltagswäsche
+        if (temp < 10) {
+            recommendations += 'Schicht 2: Langärmliges Shirt, Pullover, lange Hose. ';
+        } else if (temp >= 10 && temp < 20) {
+            recommendations += 'Schicht 2: Kurzärmliges Shirt, leichte Jacke, lange Hose. ';
+        } else {
+            recommendations += 'Schicht 2: T-Shirt, Shorts oder Rock/Kleid. ';
+        }
+
+        // Layer 3: Außenkleidung
+        if (temp < 10) {
+            recommendations += 'Schicht 3: Winterjacke, Winterschuhe, Schal, Handschuhe, Mütze. ';
+        } else if (temp >= 10 && temp < 20) {
+            recommendations += 'Schicht 3: Leichte Jacke, Sportschuhe. ';
+        } else {
+            recommendations += 'Schicht 3: Keine Jacke, Sandalen. ';
         }
 
         if (windSpeed > 20) {
-            recommendations += ' Es ist windig, ziehen Sie winddichte Kleidung in Betracht.';
+            recommendations += 'Es ist windig, ziehen Sie winddichte Kleidung in Betracht. ';
         }
 
         if (weatherCode >= 51 && weatherCode <= 67) {
-            recommendations += ' Es regnet, tragen Sie wasserdichte Kleidung und nehmen Sie einen Regenschirm mit.';
+            recommendations += 'Es regnet, tragen Sie wasserdichte Kleidung und nehmen Sie einen Regenschirm mit. ';
         } else if (weatherCode >= 71 && weatherCode <= 77) {
-            recommendations += ' Es schneit, tragen Sie warme und wasserdichte Kleidung.';
+            recommendations += 'Es schneit, tragen Sie warme und wasserdichte Kleidung. ';
         }
 
         recommendationsDiv.innerHTML = `
