@@ -152,9 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <p>Minimale Temperatur: ${data.daily.temperature_2m_min[0]}°C</p>
             <p>Gefühlte maximale Temperatur: ${data.daily.apparent_temperature_max[0]}°C</p>
             <p>Gefühlte minimale Temperatur: ${data.daily.apparent_temperature_min[0]}°C</p>
-            <p>Sonnenaufgang: ${data.daily.sunrise[0]}</p>
-            <p>Sonnenuntergang: ${data.daily.sunset[0]}</p>
-            <p>Tageslichtdauer: ${data.daily.daylight_duration[0]} Stunden</p>
             <p>Niederschlagssumme: ${data.daily.precipitation_sum[0]} mm</p>
         `;
         app.appendChild(detailedWeatherDiv);
