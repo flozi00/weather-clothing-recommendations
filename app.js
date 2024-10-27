@@ -137,47 +137,18 @@ document.addEventListener("DOMContentLoaded", () => {
 	function displayWeatherData(data) {
 		const weatherDiv = document.createElement("div");
 		weatherDiv.className = "weather";
-		const weatherIcons = {
-			0: "☀️", // Clear sky
-			1: "🌤️", // Mainly clear
-			2: "⛅", // Partly cloudy
-			3: "☁️", // Overcast
-			45: "🌫️", // Fog
-			48: "🌫️", // Depositing rime fog
-			51: "🌦️", // Drizzle: Light
-			53: "🌦️", // Drizzle: Moderate
-			55: "🌦️", // Drizzle: Dense intensity
-			56: "🌧️", // Freezing Drizzle: Light
-			57: "🌧️", // Freezing Drizzle: Dense intensity
-			61: "🌧️", // Rain: Slight
-			63: "🌧️", // Rain: Moderate
-			65: "🌧️", // Rain: Heavy intensity
-			66: "🌨️", // Freezing Rain: Light
-			67: "🌨️", // Freezing Rain: Heavy intensity
-			71: "❄️", // Snow fall: Slight
-			73: "❄️", // Snow fall: Moderate
-			75: "❄️", // Snow fall: Heavy intensity
-			77: "❄️", // Snow grains
-			80: "🌧️", // Rain showers: Slight
-			81: "🌧️", // Rain showers: Moderate
-			82: "🌧️", // Rain showers: Violent
-			85: "❄️", // Snow showers slight
-			86: "❄️", // Snow showers heavy
-			95: "⛈️", // Thunderstorm: Slight or moderate
-			96: "⛈️", // Thunderstorm with slight hail
-			99: "⛈️", // Thunderstorm with heavy hail
-		};
-		const weatherIcon = weatherIcons[data.current_weather.weathercode] || "❓";
 		weatherDiv.innerHTML = `
             <h2>Wetter an Ihrem Standort</h2>
             <p>Maximale Temperatur: ${Math.max(
-							...weatherData.hourly.temperature_2m
+							...data.hourly.temperature_2m
 						)}°C</p>
             <p>Minimale Temperatur: ${Math.min(
-							...weatherData.hourly.temperature_2m
+							...data.hourly.temperature_2m
 						)}°C</p>
-            <p>Niederschlagssumme: ${data.daily.precipitation_sum[0]} mm</p>
-            <p>Wetter: ${weatherIcon}</p>
+            <p>Niederschlagssumme: ${data.hourly.precipitation.reduce(
+							(acc, val) => acc + val,
+							0
+						)} mm</p>
         `;
 		app.appendChild(weatherDiv);
 	}
@@ -244,43 +215,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		let recommendations = [];
 
-		// Temperature recommendations
+		// Layered clothing recommendations based on temperature
 		if (temperature <= 0) {
 			recommendations.push(
-				"It's freezing outside. Wear a heavy coat, scarf, gloves, and a hat."
+				"For freezing temperatures, consider wearing the following layers:",
+				"1. Base layer: Thermal underwear",
+				"2. Mid layer: Heavy sweater or fleece",
+				"3. Outer layer: Heavy coat",
+				"4. Accessories: Scarf, gloves, and a hat"
 			);
 		} else if (temperature <= 10) {
-			recommendations.push("It's cold. Wear a coat and layers.");
+			recommendations.push(
+				"For cold temperatures, consider wearing the following layers:",
+				"1. Base layer: Long-sleeve shirt",
+				"2. Mid layer: Sweater or light fleece",
+				"3. Outer layer: Coat",
+				"4. Accessories: Gloves and a hat"
+			);
 		} else if (temperature <= 20) {
 			recommendations.push(
-				"It's cool. A light jacket or sweater is recommended."
+				"For cool temperatures, consider wearing the following layers:",
+				"1. Base layer: T-shirt or long-sleeve shirt",
+				"2. Mid layer: Light jacket or sweater"
 			);
 		} else {
-			recommendations.push("It's warm. Light clothing is appropriate.");
+			recommendations.push(
+				"For warm temperatures, consider wearing the following layers:",
+				"1. Base layer: Light clothing such as a T-shirt and shorts"
+			);
 		}
 
 		// Wind recommendations
 		if (windSpeed > 20) {
-			recommendations.push("It's windy. Consider wearing a windbreaker.");
+			recommendations.push(
+				"Due to high wind speeds, consider adding a windbreaker to your outfit."
+			);
 		}
 
 		// Precipitation recommendations
 		if (precipitationProbability > 50) {
 			recommendations.push(
-				"High chance of rain. Don't forget an umbrella or raincoat."
+				"High chance of rain. Consider adding a rain jacket or carrying an umbrella."
 			);
 		}
 
 		// Humidity recommendations
 		if (humidity > 80) {
-			recommendations.push("High humidity. Wear breathable fabrics.");
+			recommendations.push(
+				"High humidity. Wear breathable fabrics to stay comfortable."
+			);
 		}
 
 		// Cloud cover recommendations
 		if (cloudCover < 20) {
-			recommendations.push("Clear skies. Sunglasses might be necessary.");
+			recommendations.push(
+				"Clear skies. Sunglasses might be necessary to protect your eyes."
+			);
 		} else if (cloudCover > 80) {
-			recommendations.push("Very cloudy. It might feel cooler than it is.");
+			recommendations.push(
+				"Very cloudy. It might feel cooler than it is, so consider an extra layer."
+			);
 		}
 
 		// Display recommendations
