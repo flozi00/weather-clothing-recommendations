@@ -183,15 +183,15 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	function displayClothingRecommendations(weatherData) {
-		// Current temperature in degrees Celsius
-		const temperature = weatherData.hourly.temperature_2m[0];
 		// Minimum temperature in degrees Celsius for the day
 		const minTemperature = Math.min(...weatherData.hourly.temperature_2m);
 		// Maximum temperature in degrees Celsius for the day
 		const maxTemperature = Math.max(...weatherData.hourly.temperature_2m);
+		// Average temperature in degrees Celsius for the day
+		const temperature =
+			weatherData.hourly.temperature_2m.reduce((acc, val) => acc + val, 0) /
+			weatherData.hourly.temperature_2m.length;
 
-		// Apparent temperature (feels like) in degrees Celsius
-		const apparentTemperature = weatherData.hourly.apparent_temperature[0];
 		// Maximum apparent temperature in degrees Celsius for the day
 		const maxApparentTemperature = Math.max(
 			...weatherData.hourly.apparent_temperature
@@ -201,19 +201,24 @@ document.addEventListener("DOMContentLoaded", () => {
 			...weatherData.hourly.apparent_temperature
 		);
 
-		// Relative humidity in percentage
-		const humidity = weatherData.hourly.relative_humidity_2m[0];
 		// Maximum relative humidity in percentage for the day
 		const maxHumidity = Math.max(...weatherData.hourly.relative_humidity_2m);
 		// Minimum relative humidity in percentage for the day
 		const minHumidity = Math.min(...weatherData.hourly.relative_humidity_2m);
+		// Averafe humidity in percentage over the day
+		const humidity =
+			weatherData.hourly.relative_humidity_2m.reduce(
+				(acc, val) => acc + val,
+				0
+			) / weatherData.hourly.relative_humidity_2m.length;
 
-		// Dew point temperature in degrees Celsius
-		const dewPoint = weatherData.hourly.dew_point_2m[0];
-
-		// Probability of precipitation in percentage
+		// Average Probability of precipitation in percentage
 		const precipitationProbability =
-			weatherData.hourly.precipitation_probability[0];
+			weatherData.hourly.precipitation_probability.reduce(
+				(acc, val) => acc + val,
+				0
+			) / weatherData.hourly.precipitation_probability.length;
+
 		// Amount of precipitation in millimeters summed up for the day
 		const totalPrecipitation = weatherData.hourly.precipitation.reduce(
 			(acc, val) => acc + val,
@@ -225,12 +230,17 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Minimum amount of precipitation in millimeters for the day
 		const minPrecipitation = Math.min(...weatherData.hourly.precipitation);
 
-		// Cloud cover in percentage
-		const cloudCover = weatherData.hourly.cloud_cover[0];
+		// Average Cloud cover in percentage
+		const cloudCover =
+			weatherData.hourly.cloud_cover.reduce((acc, val) => acc + val, 0) /
+			weatherData.hourly.cloud_cover.length;
+
 		// Visibility in meters
 		const visibility = weatherData.hourly.visibility[0];
-		// Wind speed at 10 meters above ground in m/s
-		const windSpeed = weatherData.hourly.wind_speed_10m[0];
+		// Average Wind speed at 10 meters above ground in m/s
+		const windSpeed =
+			weatherData.hourly.wind_speed_10m.reduce((acc, val) => acc + val, 0) /
+			weatherData.hourly.wind_speed_10m.length;
 
 		let recommendations = [];
 
