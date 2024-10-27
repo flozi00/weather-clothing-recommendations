@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		weatherDiv.className = "weather";
 		weatherDiv.innerHTML = `
     <div class="weather-content">
-        <h2>Wetter an Ihrem Standort</h2>
+        <h2>Wetter an deinem Standort</h2>
         <p>Maximale Temperatur: ${Math.max(...data.hourly.temperature_2m)}°C</p>
         <p>Minimale Temperatur: ${Math.min(...data.hourly.temperature_2m)}°C</p>
         <p>Niederschlagssumme: ${data.hourly.precipitation.reduce(
