@@ -319,11 +319,11 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		}
 		if (maxTemperature > 25) {
-			recommendations.Kopfbereich = "Sonnenbrille 😎";
+			recommendations.Kopfbereich.push("Cap 🧢");
 		}
 
 		// Oberkörper
-		if (maxTemperature < 35) {
+		if (maxTemperature < 45) {
 			recommendations.Oberkörper.Schicht_1 = "Top 👕";
 		}
 		if (maxTemperature < 30) {
@@ -371,15 +371,13 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		// Füße
-		if (maxTemperature < 30) {
+		if (maxTemperature < 40) {
 			recommendations.Füße.Schicht_1 = "Sandalen 👡";
 		}
 		if (maxTemperature < 25) {
 			recommendations.Füße.Schicht_1 = "Socken 🧦";
 			recommendations.Füße.Schicht_2 = "Sneakers 👟";
-			if (precipitationProbability > 60) {
-				recommendations.Füße.Schicht_2 = "Gummistiefel 🥾";
-			} else if (precipitationProbability > 30) {
+			if (precipitationProbability > 30) {
 				recommendations.Füße.Schicht_2 = "Regenfeste Schuhe 🌧️";
 			}
 		}
