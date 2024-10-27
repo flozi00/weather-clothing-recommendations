@@ -163,17 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			weatherData.hourly.temperature_2m.reduce((acc, val) => acc + val, 0) /
 			weatherData.hourly.temperature_2m.length;
 
-		// Maximum relative humidity in percentage for the day
-		const maxHumidity = Math.max(...weatherData.hourly.relative_humidity_2m);
-		// Minimum relative humidity in percentage for the day
-		const minHumidity = Math.min(...weatherData.hourly.relative_humidity_2m);
-		// Averafe humidity in percentage over the day
-		const average_humidity =
-			weatherData.hourly.relative_humidity_2m.reduce(
-				(acc, val) => acc + val,
-				0
-			) / weatherData.hourly.relative_humidity_2m.length;
-
 		// Average Probability of precipitation in percentage
 		const precipitationProbability =
 			weatherData.hourly.precipitation_probability.reduce(
@@ -181,24 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
 				0
 			) / weatherData.hourly.precipitation_probability.length;
 
-		// Amount of precipitation in millimeters summed up for the day
-		const totalPrecipitation = weatherData.hourly.precipitation.reduce(
-			(acc, val) => acc + val,
-			0
-		);
-
-		// Maximum amount of precipitation in millimeters for the day
-		const maxPrecipitation = Math.max(...weatherData.hourly.precipitation);
-		// Minimum amount of precipitation in millimeters for the day
-		const minPrecipitation = Math.min(...weatherData.hourly.precipitation);
-
-		// Average Cloud cover in percentage
-		const cloudCover =
-			weatherData.hourly.cloud_cover.reduce((acc, val) => acc + val, 0) /
-			weatherData.hourly.cloud_cover.length;
-
-		// Visibility in meters
-		const visibility = weatherData.hourly.visibility[0];
 		// Average Wind speed at 10 meters above ground in m/s
 		const average_windSpeed =
 			weatherData.hourly.wind_speed_10m.reduce((acc, val) => acc + val, 0) /
@@ -207,11 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		/*
         The criteria for the clothing recommendations should be based on the following factors:
         - Temperature (min, max, average)
-        - Humidity (min, max, average)
         - Precipitation probability
-        - Total precipitation
-        - Cloud cover
-        - Visibility
         - Wind speed (average)
 
         Example of how the recommendation should be structured:
@@ -220,24 +187,43 @@ document.addEventListener("DOMContentLoaded", () => {
             - Sonnenbrille
             - Schal
         - Oberkörper
-            - T-Shirt
-            - Pullover
-            - Jacke
-            - Regenjacke
-            - Wintermantel
+            - Schicht 1
+                - Unterhemd
+                - Thermo-hemd
+            - Schicht 2
+                - Langarmshirt
+                - Shirt
+            - Schicht 3
+                - Pullover
+                - Jacke
+                - Hoodie
+            - Schicht 4
+                - Wintermantel
+                - Regenjacke
+                - Windfeste Jacke
+                - Leichte Jacke
+                - Weste
         - Unterkörper
-            - Hose
-            - Shorts
-            - Regenhose
-            - Schnee-/Skihose
-            - Thermo-Unterwäsche
+            - Schicht 1
+                - Unterhose
+            - Schicht 2
+                - Lange Unterhose
+                - Hose
+            - Schicht 3
+                - Schnee-/Skihose
+                - Regenhose
         - Füße
-            - Socken (dick, dünn, lang, kurz)
-            - Regenfeste Schuhe
-            - Sandalen
-            - Leichte Schuhe
-            - Gummistiefel
-            - Winterstiefel
+            - Schicht 1
+                - Socken
+                    - Dünne Socken
+                    - Dicke Socken
+                    - Kurze Socken
+                    - Lange Socken
+            - Schicht 2
+                - Winterstiefel
+                - Regenfeste Schuhe
+                - Sandalen
+                - Gummistiefel
         - Hände
             - Handschuhe
             - Regenschirm
@@ -245,61 +231,101 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Initialize recommendations object
 		const recommendations = {
 			Kopfbereich: [],
-			Oberkörper: [],
-			Unterkörper: [],
-			Füße: [],
+			Oberkörper: {
+				Schicht_1: "",
+				Schicht_2: "",
+				Schicht_3: "",
+				Schicht_4: "",
+			},
+			Unterkörper: { Schicht_1: "", Schicht_2: "", Schicht_3: "" },
+			Füße: { Schicht_1: "", Schicht_2: "" },
 			Hände: [],
 		};
 
-		// Temperature-based recommendations
-		if (average_temperature <= 0) {
-			recommendations["Kopfbereich"].push("Mütze", "Schal");
-			recommendations["Oberkörper"].push("Wintermantel");
-			recommendations["Unterkörper"].push(
-				"Thermo-Unterwäsche",
-				"Schnee-/Skihose"
-			);
-			recommendations["Füße"].push("Winterstiefel", "Dicke Socken");
-			recommendations["Hände"].push("Handschuhe");
-		} else if (average_temperature > 0 && average_temperature <= 10) {
-			recommendations["Kopfbereich"].push("Mütze", "Schal");
-			recommendations["Oberkörper"].push("Pullover", "Jacke");
-			recommendations["Unterkörper"].push("Hose");
-			recommendations["Füße"].push("Regenfeste Schuhe", "Dicke Socken");
-			recommendations["Hände"].push("Handschuhe");
-		} else if (average_temperature > 10 && average_temperature <= 20) {
-			recommendations["Kopfbereich"].push("Schal");
-			recommendations["Oberkörper"].push("Pullover", "Leichte Jacke");
-			recommendations["Unterkörper"].push("Hose");
-			recommendations["Füße"].push("Leichte Schuhe");
-		} else if (average_temperature > 20) {
-			recommendations["Kopfbereich"].push("Sonnenbrille");
-			recommendations["Oberkörper"].push("T-Shirt");
-			recommendations["Unterkörper"].push("Shorts");
-			recommendations["Füße"].push("Sandalen");
+		// Iterating over each area of the body and adding recommendations based on the weather data
+		// Head
+		if (maxTemperature < 8) {
+			recommendations.Kopfbereich.push("Mütze");
+			if (maxTemperature < 3) {
+				recommendations.Kopfbereich.push("Schal");
+			}
+		}
+		if (maxTemperature > 25) {
+			recommendations.Kopfbereich = "Sonnenbrille";
 		}
 
-		// Precipitation-based recommendations
-		if (precipitationProbability > 50 || totalPrecipitation > 0) {
-			recommendations["Oberkörper"].push("Regenjacke");
-			recommendations["Unterkörper"].push("Regenhose");
-			recommendations["Füße"].push("Gummistiefel");
-			recommendations["Hände"].push("Regenschirm");
+		// Upper body
+		if (maxTemperature < 35) {
+			recommendations.Oberkörper.Schicht_1 = "Top";
+		}
+		if (maxTemperature < 30) {
+			recommendations.Oberkörper.Schicht_1 = "T-Shirt";
+		}
+		if (maxTemperature < 25) {
+			recommendations.Oberkörper.Schicht_1 = "Unterhemd";
+			recommendations.Oberkörper.Schicht_2 = "T-Shirt";
+		}
+		if (maxTemperature < 18) {
+			recommendations.Oberkörper.Schicht_1 = "Unterhemd";
+			recommendations.Oberkörper.Schicht_2 = "T-Shirt";
+			recommendations.Oberkörper.Schicht_3 = "Pullover";
+			recommendations.Oberkörper.Schicht_4 = "Weste";
+		}
+		if (maxTemperature < 15) {
+			recommendations.Oberkörper.Schicht_1 = "Unterhemd";
+			recommendations.Oberkörper.Schicht_2 = "T-Shirt";
+			recommendations.Oberkörper.Schicht_3 = "Pullover / Sweatshirt Jacke";
+			recommendations.Oberkörper.Schicht_4 = "Jacke";
+		}
+		if (maxTemperature < 5) {
+			recommendations.Oberkörper.Schicht_1 = "Thermo-hemd";
+			recommendations.Oberkörper.Schicht_2 = "Langarmshirt";
+			recommendations.Oberkörper.Schicht_3 = "Pullover / Sweatshirt Jacke";
+			recommendations.Oberkörper.Schicht_4 = "Wintermantel";
 		}
 
-		// Cloud cover-based recommendations
-		if (cloudCover < 30) {
-			recommendations["Kopfbereich"].push("Sonnenbrille");
+		// Lower body
+		if (maxTemperature < 50) {
+			recommendations.Unterkörper.Schicht_1 = "Unterhose";
+			recommendations.Unterkörper.Schicht_2 = "Shorts / Badehose";
+		}
+		if (maxTemperature < 28) {
+			recommendations.Unterkörper.Schicht_1 = "Unterhose";
+			recommendations.Unterkörper.Schicht_2 = "Kurze Hose";
+		}
+		if (maxTemperature < 20) {
+			recommendations.Unterkörper.Schicht_1 = "Unterhose";
+			recommendations.Unterkörper.Schicht_2 = "Lange Hose";
+		}
+		if (maxTemperature < 5) {
+			recommendations.Unterkörper.Schicht_1 = "Thermo-Unterhose";
+			recommendations.Unterkörper.Schicht_2 = "Lange Hose";
 		}
 
-		// Wind speed-based recommendations
-		if (average_windSpeed > 10) {
-			recommendations["Oberkörper"].push("Windjacke");
+		// Feet
+		if (maxTemperature < 30) {
+			recommendations.Füße.Schicht_1 = "Sandalen";
+		}
+		if (maxTemperature < 25) {
+			recommendations.Füße.Schicht_1 = "Socken";
+			recommendations.Füße.Schicht_2 = "Sneakers";
+			if (precipitationProbability > 60) {
+				recommendations.Füße.Schicht_2 = "Gummistiefel";
+			} else if (precipitationProbability > 30) {
+				recommendations.Füße.Schicht_2 = "Regenfeste Schuhe";
+			}
+		}
+		if (maxTemperature < 5) {
+			recommendations.Füße.Schicht_1 = "Socken";
+			recommendations.Füße.Schicht_2 = "Winterschuhe";
 		}
 
-		// Remove duplicate recommendations
-		for (let category in recommendations) {
-			recommendations[category] = [...new Set(recommendations[category])];
+		// Hands
+		if (maxTemperature < 5) {
+			recommendations.Hände.push("Handschuhe");
+		}
+		if (precipitationProbability > 50) {
+			recommendations.Kopfbereich.push("Regenschirm");
 		}
 
 		// Create card-style UI
@@ -307,6 +333,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		const recommendationsDiv = document.createElement("div");
 		recommendationsDiv.className = "recommendations";
+		recommendationsDiv.style.display = "flex";
+		recommendationsDiv.style.flexDirection = "column";
 
 		const title = document.createElement("h2");
 		title.textContent = "Kleidungsempfehlungen";
@@ -322,11 +350,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			const itemList = document.createElement("ul");
 
-			recommendations[category].forEach((item) => {
-				const listItem = document.createElement("li");
-				listItem.textContent = item;
-				itemList.appendChild(listItem);
-			});
+			const items = recommendations[category];
+			if (Array.isArray(items)) {
+				items.forEach((item) => {
+					const listItem = document.createElement("li");
+					listItem.textContent = item;
+					itemList.appendChild(listItem);
+				});
+			} else {
+				for (let subCategory in items) {
+					const listItem = document.createElement("li");
+					listItem.textContent = `${subCategory}: ${items[subCategory]}`;
+					itemList.appendChild(listItem);
+				}
+			}
 
 			categoryCard.appendChild(itemList);
 			recommendationsDiv.appendChild(categoryCard);

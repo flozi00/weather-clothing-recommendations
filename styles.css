@@ -184,8 +184,10 @@ button:hover {
 .card ul {
     list-style-type: none;
     padding: 0;
+    text-align: center; /* Center the list items */
 }
 
 .card ul li {
     margin-bottom: 8px;
+    display: inline-block; /* Make list items inline-block to center them */
 }
