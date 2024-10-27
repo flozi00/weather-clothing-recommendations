@@ -335,46 +335,49 @@ document.addEventListener("DOMContentLoaded", () => {
 		recommendationsDiv.className = "recommendations";
 		recommendationsDiv.style.display = "flex";
 		recommendationsDiv.style.flexDirection = "column";
+		recommendationsDiv.style.alignItems = "center"; // Center the content horizontally
+		recommendationsDiv.style.justifyContent = "center"; // Center the content vertically
+		recommendationsDiv.style.margin = "0 auto"; // Center the div itself
 
 		const title = document.createElement("h2");
 		title.textContent = "Kleidungsempfehlungen";
 		recommendationsDiv.appendChild(title);
 
-        for (let category in recommendations) {
-					const items = recommendations[category];
-					if (
-						(Array.isArray(items) && items.length > 0) ||
-						(!Array.isArray(items) && Object.values(items).some((val) => val))
-					) {
-						const categoryCard = document.createElement("div");
-						categoryCard.className = "card";
+		for (let category in recommendations) {
+			const items = recommendations[category];
+			if (
+				(Array.isArray(items) && items.length > 0) ||
+				(!Array.isArray(items) && Object.values(items).some((val) => val))
+			) {
+				const categoryCard = document.createElement("div");
+				categoryCard.className = "card";
 
-						const categoryTitle = document.createElement("h3");
-						categoryTitle.textContent = category;
-						categoryCard.appendChild(categoryTitle);
+				const categoryTitle = document.createElement("h3");
+				categoryTitle.textContent = category;
+				categoryCard.appendChild(categoryTitle);
 
-						const itemList = document.createElement("ul");
+				const itemList = document.createElement("ul");
 
-						if (Array.isArray(items)) {
-							items.forEach((item) => {
-								const listItem = document.createElement("li");
-								listItem.textContent = item;
-								itemList.appendChild(listItem);
-							});
-						} else {
-							for (let subCategory in items) {
-								if (items[subCategory]) {
-									const listItem = document.createElement("li");
-									listItem.textContent = `${subCategory}: ${items[subCategory]}`;
-									itemList.appendChild(listItem);
-								}
-							}
+				if (Array.isArray(items)) {
+					items.forEach((item) => {
+						const listItem = document.createElement("li");
+						listItem.textContent = item;
+						itemList.appendChild(listItem);
+					});
+				} else {
+					for (let subCategory in items) {
+						if (items[subCategory]) {
+							const listItem = document.createElement("li");
+							listItem.textContent = `${subCategory}: ${items[subCategory]}`;
+							itemList.appendChild(listItem);
 						}
-
-						categoryCard.appendChild(itemList);
-						recommendationsDiv.appendChild(categoryCard);
 					}
 				}
+
+				categoryCard.appendChild(itemList);
+				recommendationsDiv.appendChild(categoryCard);
+			}
+		}
 
 		app.appendChild(recommendationsDiv);
 	}
