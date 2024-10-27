@@ -110,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			.then((data) => {
 				displayWeatherData(data);
 				displayClothingRecommendations(data);
-				displayDetailedWeatherInfo(data);
 			})
 			.catch((error) => {
 				app.innerHTML = "Error fetching weather data.";
@@ -171,28 +170,66 @@ document.addEventListener("DOMContentLoaded", () => {
 		const weatherIcon = weatherIcons[data.current_weather.weathercode] || "❓";
 		weatherDiv.innerHTML = `
             <h2>Wetter an Ihrem Standort</h2>
-            <p>Temperatur: ${data.current_weather.temperature}°C</p>
+            <p>Maximale Temperatur: ${Math.max(
+							...weatherData.hourly.temperature_2m
+						)}°C</p>
+            <p>Minimale Temperatur: ${Math.min(
+							...weatherData.hourly.temperature_2m
+						)}°C</p>
+            <p>Niederschlagssumme: ${data.daily.precipitation_sum[0]} mm</p>
             <p>Wetter: ${weatherIcon}</p>
         `;
 		app.appendChild(weatherDiv);
 	}
 
 	function displayClothingRecommendations(weatherData) {
+		// Current temperature in degrees Celsius
 		const temperature = weatherData.hourly.temperature_2m[0];
+		// Minimum temperature in degrees Celsius for the day
 		const minTemperature = Math.min(...weatherData.hourly.temperature_2m);
+		// Maximum temperature in degrees Celsius for the day
 		const maxTemperature = Math.max(...weatherData.hourly.temperature_2m);
 
+		// Apparent temperature (feels like) in degrees Celsius
 		const apparentTemperature = weatherData.hourly.apparent_temperature[0];
+		// Maximum apparent temperature in degrees Celsius for the day
+		const maxApparentTemperature = Math.max(
+			...weatherData.hourly.apparent_temperature
+		);
+		// Minimum apparent temperature in degrees Celsius for the day
+		const minApparentTemperature = Math.min(
+			...weatherData.hourly.apparent_temperature
+		);
+
+		// Relative humidity in percentage
 		const humidity = weatherData.hourly.relative_humidity_2m[0];
+		// Maximum relative humidity in percentage for the day
+		const maxHumidity = Math.max(...weatherData.hourly.relative_humidity_2m);
+		// Minimum relative humidity in percentage for the day
+		const minHumidity = Math.min(...weatherData.hourly.relative_humidity_2m);
+
+		// Dew point temperature in degrees Celsius
 		const dewPoint = weatherData.hourly.dew_point_2m[0];
+
+		// Probability of precipitation in percentage
 		const precipitationProbability =
 			weatherData.hourly.precipitation_probability[0];
-		const precipitation = weatherData.hourly.precipitation[0];
-		const weatherCode = weatherData.hourly.weather_code[0];
-		const pressure = weatherData.hourly.pressure_msl[0];
-		const surfacePressure = weatherData.hourly.surface_pressure[0];
+		// Amount of precipitation in millimeters summed up for the day
+		const totalPrecipitation = weatherData.hourly.precipitation.reduce(
+			(acc, val) => acc + val,
+			0
+		);
+
+		// Maximum amount of precipitation in millimeters for the day
+		const maxPrecipitation = Math.max(...weatherData.hourly.precipitation);
+		// Minimum amount of precipitation in millimeters for the day
+		const minPrecipitation = Math.min(...weatherData.hourly.precipitation);
+
+		// Cloud cover in percentage
 		const cloudCover = weatherData.hourly.cloud_cover[0];
+		// Visibility in meters
 		const visibility = weatherData.hourly.visibility[0];
+		// Wind speed at 10 meters above ground in m/s
 		const windSpeed = weatherData.hourly.wind_speed_10m[0];
 
 		let recommendations = [];
@@ -239,19 +276,5 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Display recommendations
 		const app = document.getElementById("app");
 		app.innerHTML = recommendations.join(" ");
-	}
-
-	function displayDetailedWeatherInfo(data) {
-		const detailedWeatherDiv = document.createElement("div");
-		detailedWeatherDiv.id = "detailed-weather-info";
-		detailedWeatherDiv.innerHTML = `
-            <h2>Detaillierte Wetterinformationen</h2>
-            <p>Maximale Temperatur: ${data.daily.temperature_2m_max[0]}°C</p>
-            <p>Minimale Temperatur: ${data.daily.temperature_2m_min[0]}°C</p>
-            <p>Gefühlte maximale Temperatur: ${data.daily.apparent_temperature_max[0]}°C</p>
-            <p>Gefühlte minimale Temperatur: ${data.daily.apparent_temperature_min[0]}°C</p>
-            <p>Niederschlagssumme: ${data.daily.precipitation_sum[0]} mm</p>
-        `;
-		app.appendChild(detailedWeatherDiv);
 	}
 });
