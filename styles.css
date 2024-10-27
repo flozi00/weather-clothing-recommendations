@@ -19,6 +19,10 @@ p {
 
 .recommendations {
     margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
 }
 
 /* Ensure the design is responsive and works well on both desktop and mobile devices */
@@ -160,4 +164,28 @@ button:hover {
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 180px;
+    margin: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.card ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.card ul li {
+    margin-bottom: 8px;
 }

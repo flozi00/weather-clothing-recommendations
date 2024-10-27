@@ -159,25 +159,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Maximum temperature in degrees Celsius for the day
 		const maxTemperature = Math.max(...weatherData.hourly.temperature_2m);
 		// Average temperature in degrees Celsius for the day
-		const temperature =
+		const average_temperature =
 			weatherData.hourly.temperature_2m.reduce((acc, val) => acc + val, 0) /
 			weatherData.hourly.temperature_2m.length;
-
-		// Maximum apparent temperature in degrees Celsius for the day
-		const maxApparentTemperature = Math.max(
-			...weatherData.hourly.apparent_temperature
-		);
-		// Minimum apparent temperature in degrees Celsius for the day
-		const minApparentTemperature = Math.min(
-			...weatherData.hourly.apparent_temperature
-		);
 
 		// Maximum relative humidity in percentage for the day
 		const maxHumidity = Math.max(...weatherData.hourly.relative_humidity_2m);
 		// Minimum relative humidity in percentage for the day
 		const minHumidity = Math.min(...weatherData.hourly.relative_humidity_2m);
 		// Averafe humidity in percentage over the day
-		const humidity =
+		const average_humidity =
 			weatherData.hourly.relative_humidity_2m.reduce(
 				(acc, val) => acc + val,
 				0
@@ -209,76 +200,138 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Visibility in meters
 		const visibility = weatherData.hourly.visibility[0];
 		// Average Wind speed at 10 meters above ground in m/s
-		const windSpeed =
+		const average_windSpeed =
 			weatherData.hourly.wind_speed_10m.reduce((acc, val) => acc + val, 0) /
 			weatherData.hourly.wind_speed_10m.length;
 
-		let recommendations = [];
+		/*
+        The criteria for the clothing recommendations should be based on the following factors:
+        - Temperature (min, max, average)
+        - Humidity (min, max, average)
+        - Precipitation probability
+        - Total precipitation
+        - Cloud cover
+        - Visibility
+        - Wind speed (average)
 
-		// Layered clothing recommendations based on temperature
-		if (temperature <= 0) {
-			recommendations.push(
-				"Bei Gefriertemperaturen solltest du folgende Schichten tragen:",
-				"1. Basisschicht: Thermounterwäsche",
-				"2. Mittelschicht: Schwerer Pullover oder Fleece",
-				"3. Außenschicht: Schwerer Mantel",
-				"4. Zubehör: Schal, Handschuhe und eine Mütze"
+        Example of how the recommendation should be structured:
+        - Kopfbereich
+            - Mütze
+            - Sonnenbrille
+            - Schal
+        - Oberkörper
+            - T-Shirt
+            - Pullover
+            - Jacke
+            - Regenjacke
+            - Wintermantel
+        - Unterkörper
+            - Hose
+            - Shorts
+            - Regenhose
+            - Schnee-/Skihose
+            - Thermo-Unterwäsche
+        - Füße
+            - Socken (dick, dünn, lang, kurz)
+            - Regenfeste Schuhe
+            - Sandalen
+            - Leichte Schuhe
+            - Gummistiefel
+            - Winterstiefel
+        - Hände
+            - Handschuhe
+            - Regenschirm
+        */
+		// Initialize recommendations object
+		const recommendations = {
+			Kopfbereich: [],
+			Oberkörper: [],
+			Unterkörper: [],
+			Füße: [],
+			Hände: [],
+		};
+
+		// Temperature-based recommendations
+		if (average_temperature <= 0) {
+			recommendations["Kopfbereich"].push("Mütze", "Schal");
+			recommendations["Oberkörper"].push("Wintermantel");
+			recommendations["Unterkörper"].push(
+				"Thermo-Unterwäsche",
+				"Schnee-/Skihose"
 			);
-		} else if (temperature <= 10) {
-			recommendations.push(
-				"Bei kalten Temperaturen solltest du folgende Schichten tragen:",
-				"1. Basisschicht: Langarmshirt",
-				"2. Mittelschicht: Pullover oder leichtes Fleece",
-				"3. Außenschicht: Mantel",
-				"4. Zubehör: Handschuhe und eine Mütze"
-			);
-		} else if (temperature <= 20) {
-			recommendations.push(
-				"Bei kühlen Temperaturen solltest du folgende Schichten tragen:",
-				"1. Basisschicht: T-Shirt oder Langarmshirt",
-				"2. Mittelschicht: Leichte Jacke oder Pullover"
-			);
-		} else {
-			recommendations.push(
-				"Bei warmen Temperaturen solltest du folgende Schichten tragen:",
-				"1. Basisschicht: Leichte Kleidung wie T-Shirt und Shorts"
-			);
+			recommendations["Füße"].push("Winterstiefel", "Dicke Socken");
+			recommendations["Hände"].push("Handschuhe");
+		} else if (average_temperature > 0 && average_temperature <= 10) {
+			recommendations["Kopfbereich"].push("Mütze", "Schal");
+			recommendations["Oberkörper"].push("Pullover", "Jacke");
+			recommendations["Unterkörper"].push("Hose");
+			recommendations["Füße"].push("Regenfeste Schuhe", "Dicke Socken");
+			recommendations["Hände"].push("Handschuhe");
+		} else if (average_temperature > 10 && average_temperature <= 20) {
+			recommendations["Kopfbereich"].push("Schal");
+			recommendations["Oberkörper"].push("Pullover", "Leichte Jacke");
+			recommendations["Unterkörper"].push("Hose");
+			recommendations["Füße"].push("Leichte Schuhe");
+		} else if (average_temperature > 20) {
+			recommendations["Kopfbereich"].push("Sonnenbrille");
+			recommendations["Oberkörper"].push("T-Shirt");
+			recommendations["Unterkörper"].push("Shorts");
+			recommendations["Füße"].push("Sandalen");
 		}
 
-		// Wind recommendations
-		if (windSpeed > 20) {
-			recommendations.push(
-				"Bei starkem Wind solltest du eine Windjacke tragen."
-			);
+		// Precipitation-based recommendations
+		if (precipitationProbability > 50 || totalPrecipitation > 0) {
+			recommendations["Oberkörper"].push("Regenjacke");
+			recommendations["Unterkörper"].push("Regenhose");
+			recommendations["Füße"].push("Gummistiefel");
+			recommendations["Hände"].push("Regenschirm");
 		}
 
-		// Precipitation recommendations
-		if (precipitationProbability > 50) {
-			recommendations.push(
-				"Hohe Regenwahrscheinlichkeit. Nimm eine Regenjacke oder einen Regenschirm mit."
-			);
+		// Cloud cover-based recommendations
+		if (cloudCover < 30) {
+			recommendations["Kopfbereich"].push("Sonnenbrille");
 		}
 
-		// Humidity recommendations
-		if (humidity > 80) {
-			recommendations.push(
-				"Hohe Luftfeuchtigkeit. Trage atmungsaktive Stoffe, um bequem zu bleiben."
-			);
+		// Wind speed-based recommendations
+		if (average_windSpeed > 10) {
+			recommendations["Oberkörper"].push("Windjacke");
 		}
 
-		// Cloud cover recommendations
-		if (cloudCover < 20) {
-			recommendations.push(
-				"Klarer Himmel. Eine Sonnenbrille könnte notwendig sein, um deine Augen zu schützen."
-			);
-		} else if (cloudCover > 80) {
-			recommendations.push(
-				"Sehr bewölkt. Es könnte kühler sein als es ist, also zieh eine extra Schicht in Betracht."
-			);
+		// Remove duplicate recommendations
+		for (let category in recommendations) {
+			recommendations[category] = [...new Set(recommendations[category])];
 		}
 
-		// Display recommendations
+		// Create card-style UI
 		const app = document.getElementById("app");
-		app.innerHTML = recommendations.join(" ");
+
+		const recommendationsDiv = document.createElement("div");
+		recommendationsDiv.className = "recommendations";
+
+		const title = document.createElement("h2");
+		title.textContent = "Kleidungsempfehlungen";
+		recommendationsDiv.appendChild(title);
+
+		for (let category in recommendations) {
+			const categoryCard = document.createElement("div");
+			categoryCard.className = "card";
+
+			const categoryTitle = document.createElement("h3");
+			categoryTitle.textContent = category;
+			categoryCard.appendChild(categoryTitle);
+
+			const itemList = document.createElement("ul");
+
+			recommendations[category].forEach((item) => {
+				const listItem = document.createElement("li");
+				listItem.textContent = item;
+				itemList.appendChild(listItem);
+			});
+
+			categoryCard.appendChild(itemList);
+			recommendationsDiv.appendChild(categoryCard);
+		}
+
+		app.appendChild(recommendationsDiv);
 	}
 });
