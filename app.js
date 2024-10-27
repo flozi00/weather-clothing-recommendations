@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Fetch weather data from the Open-Meteo API using the user's location
 		const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,precipitation_probability,precipitation,weather_code,pressure_msl,surface_pressure,cloud_cover,visibility,wind_speed_10m&forecast_days=1`;
 
-		const_example_data = {
+		const _example_data = {
 			latitude: 52.52,
 			longitude: 13.419998,
 			generationtime_ms: 0.13697147369384766,
@@ -177,71 +177,68 @@ document.addEventListener("DOMContentLoaded", () => {
 		app.appendChild(weatherDiv);
 	}
 
-	function displayClothingRecommendations(data) {
-		const recommendationsDiv = document.createElement("div");
-		recommendationsDiv.className = "recommendations";
-		const temp = data.current_weather.temperature;
-		const windSpeed = data.current_weather.windspeed;
-		const weatherCode = data.current_weather.weathercode;
+	function displayClothingRecommendations(weatherData) {
+		const temperature = weatherData.hourly.temperature_2m[0];
+		const minTemperature = Math.min(...weatherData.hourly.temperature_2m);
+		const maxTemperature = Math.max(...weatherData.hourly.temperature_2m);
 
-		const layer1 = document.createElement("div");
-		layer1.className = "layer";
-		const layer2 = document.createElement("div");
-		layer2.className = "layer";
-		const layer3 = document.createElement("div");
-		layer3.className = "layer";
+		const apparentTemperature = weatherData.hourly.apparent_temperature[0];
+		const humidity = weatherData.hourly.relative_humidity_2m[0];
+		const dewPoint = weatherData.hourly.dew_point_2m[0];
+		const precipitationProbability =
+			weatherData.hourly.precipitation_probability[0];
+		const precipitation = weatherData.hourly.precipitation[0];
+		const weatherCode = weatherData.hourly.weather_code[0];
+		const pressure = weatherData.hourly.pressure_msl[0];
+		const surfacePressure = weatherData.hourly.surface_pressure[0];
+		const cloudCover = weatherData.hourly.cloud_cover[0];
+		const visibility = weatherData.hourly.visibility[0];
+		const windSpeed = weatherData.hourly.wind_speed_10m[0];
 
-		// Layer 1: Unterwäsche
-		if (temp < 5) {
-			layer1.innerHTML =
-				"<h3>Schicht 1: Unterwäsche</h3><p>Thermo-Unterwäsche, Thermo-Socken</p>";
+		let recommendations = [];
+
+		// Temperature recommendations
+		if (temperature <= 0) {
+			recommendations.push(
+				"It's freezing outside. Wear a heavy coat, scarf, gloves, and a hat."
+			);
+		} else if (temperature <= 10) {
+			recommendations.push("It's cold. Wear a coat and layers.");
+		} else if (temperature <= 20) {
+			recommendations.push(
+				"It's cool. A light jacket or sweater is recommended."
+			);
 		} else {
-			layer1.innerHTML =
-				"<h3>Schicht 1: Unterwäsche</h3><p>Normale Unterwäsche, Socken</p>";
+			recommendations.push("It's warm. Light clothing is appropriate.");
 		}
 
-		// Layer 2: Alltagswäsche
-		if (temp < 10) {
-			layer2.innerHTML =
-				"<h3>Schicht 2: Alltagswäsche</h3><p>Langärmliges Shirt, Pullover, lange Hose</p>";
-		} else if (temp >= 10 && temp < 20) {
-			layer2.innerHTML =
-				"<h3>Schicht 2: Alltagswäsche</h3><p>Kurzärmliges Shirt, leichte Jacke, lange Hose</p>";
-		} else {
-			layer2.innerHTML =
-				"<h3>Schicht 2: Alltagswäsche</h3><p>T-Shirt, Shorts oder Rock/Kleid</p>";
-		}
-
-		// Layer 3: Außenkleidung
-		if (temp < 10) {
-			layer3.innerHTML =
-				"<h3>Schicht 3: Außenkleidung</h3><p>Winterjacke, Winterschuhe, Schal, Handschuhe, Mütze</p>";
-		} else if (temp >= 10 && temp < 20) {
-			layer3.innerHTML =
-				"<h3>Schicht 3: Außenkleidung</h3><p>Leichte Jacke, Sportschuhe</p>";
-		} else {
-			layer3.innerHTML =
-				"<h3>Schicht 3: Außenkleidung</h3><p>Keine Jacke, Sandalen</p>";
-		}
-
+		// Wind recommendations
 		if (windSpeed > 20) {
-			layer3.innerHTML +=
-				"<p>Es ist windig, ziehen Sie winddichte Kleidung in Betracht</p>";
+			recommendations.push("It's windy. Consider wearing a windbreaker.");
 		}
 
-		if (weatherCode >= 51 && weatherCode <= 67) {
-			layer3.innerHTML +=
-				"<p>Es regnet, tragen Sie wasserdichte Kleidung und nehmen Sie einen Regenschirm mit</p>";
-		} else if (weatherCode >= 71 && weatherCode <= 77) {
-			layer3.innerHTML +=
-				"<p>Es schneit, tragen Sie warme und wasserdichte Kleidung</p>";
+		// Precipitation recommendations
+		if (precipitationProbability > 50) {
+			recommendations.push(
+				"High chance of rain. Don't forget an umbrella or raincoat."
+			);
 		}
 
-		recommendationsDiv.appendChild(layer1);
-		recommendationsDiv.appendChild(layer2);
-		recommendationsDiv.appendChild(layer3);
+		// Humidity recommendations
+		if (humidity > 80) {
+			recommendations.push("High humidity. Wear breathable fabrics.");
+		}
 
-		app.appendChild(recommendationsDiv);
+		// Cloud cover recommendations
+		if (cloudCover < 20) {
+			recommendations.push("Clear skies. Sunglasses might be necessary.");
+		} else if (cloudCover > 80) {
+			recommendations.push("Very cloudy. It might feel cooler than it is.");
+		}
+
+		// Display recommendations
+		const app = document.getElementById("app");
+		app.innerHTML = recommendations.join(" ");
 	}
 
 	function displayDetailedWeatherInfo(data) {
