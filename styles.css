@@ -157,6 +157,20 @@ button:hover {
     margin-right: 10px;
 }
 
+.weather {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 30vh; /* Ensure the parent takes full viewport height */
+}
+
+.weather-content {
+    background-color: rgba(255, 255, 255, 0.5); /* White background with 50% opacity */
+    padding: 10px; /* Optional: Add some padding for better readability */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    width: 400px; /* Set the width to 400px */
+}
+
 /* Add styles for the layerwise UI to show clothing recommendations */
 .layer {
     margin: 20px 0;

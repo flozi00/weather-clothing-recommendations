@@ -208,18 +208,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		weatherDiv.className = "weather";
 		weatherDiv.innerHTML = `
-            <h2>Wetter an Ihrem Standort</h2>
-            <p>Maximale Temperatur: ${Math.max(
-							...data.hourly.temperature_2m
-						)}°C</p>
-            <p>Minimale Temperatur: ${Math.min(
-							...data.hourly.temperature_2m
-						)}°C</p>
-            <p>Niederschlagssumme: ${data.hourly.precipitation.reduce(
-							(acc, val) => acc + val,
-							0
-						)} mm</p>
-        `;
+    <div class="weather-content">
+        <h2>Wetter an Ihrem Standort</h2>
+        <p>Maximale Temperatur: ${Math.max(...data.hourly.temperature_2m)}°C</p>
+        <p>Minimale Temperatur: ${Math.min(...data.hourly.temperature_2m)}°C</p>
+        <p>Niederschlagssumme: ${data.hourly.precipitation.reduce(
+					(acc, val) => acc + val,
+					0
+				)} mm</p>
+    </div>
+`;
 		app.appendChild(weatherDiv);
 	}
 
@@ -421,6 +419,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			) {
 				const categoryCard = document.createElement("div");
 				categoryCard.className = "card";
+				categoryCard.style.width = "300px"; // Set a fixed width for the card
 
 				const categoryTitle = document.createElement("h3");
 				categoryTitle.textContent = category;
@@ -432,6 +431,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					items.forEach((item) => {
 						const listItem = document.createElement("li");
 						listItem.textContent = item;
+						listItem.style.display = "block"; // Ensure each item is on its own line
 						itemList.appendChild(listItem);
 					});
 				} else {
@@ -439,6 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						if (items[subCategory]) {
 							const listItem = document.createElement("li");
 							listItem.textContent = `    ${items[subCategory]}    `;
+							listItem.style.display = "block"; // Ensure each item is on its own line
 							itemList.appendChild(listItem);
 						}
 					}
