@@ -2,24 +2,6 @@
 
 Dieses Projekt ist eine Website, die den Standort des Benutzers verwendet, um die aktuellen Wetterbedingungen abzurufen. Basierend auf den Wetterdaten empfiehlt es geeignete Kleidungskombinationen (z. B. warme Kleidung für kalte Tage, leichte Kleidung für heiße Tage). Die Website bietet Optionen für verschiedene Arten von Aktivitäten (z. B. Freizeit, formell, Sport) und ermöglicht es Benutzern, ihre Lieblingskleidungskombinationen für die Zukunft zu speichern.
 
-## So führen Sie das Projekt aus
-
-1. Klonen Sie das Repository:
-    ```
-    git clone https://github.com/githubnext/workspace-blank.git
-    ```
-
-2. Navigieren Sie zum Projektverzeichnis:
-    ```
-    cd workspace-blank
-    ```
-
-3. Öffnen Sie `index.html` in Ihrem bevorzugten Webbrowser.
-
-4. Die Website fordert Sie auf, den Zugriff auf Ihren Standort zu erlauben. Sobald Sie den Zugriff erlauben, werden die aktuellen Wetterdaten abgerufen und Kleidungsempfehlungen basierend auf den Wetterbedingungen angezeigt.
-
-5. Sie können Ihre Lieblingskleidungskombinationen für die Zukunft speichern.
-
 ## Dateien
 
 - `index.html`: Die Haupt-HTML-Datei, die die Struktur der Website enthält.
@@ -29,10 +11,6 @@ Dieses Projekt ist eine Website, die den Standort des Benutzers verwendet, um di
 ## Benutzerbewertungen und Feedback
 
 Wir schätzen Ihr Feedback! Bitte hinterlassen Sie Ihre Bewertungen und Vorschläge zur Verbesserung der Kleidungsempfehlungen. Ihr Input wird uns helfen, die Genauigkeit und Relevanz der Vorschläge zu verbessern.
-
-## Soziale Weitergabe
-
-Teilen Sie Ihre Lieblingskleidungskombinationen mit Ihren Freunden in sozialen Medien! Verwenden Sie die sozialen Weitergabeschaltflächen auf der Website, um Ihre Empfehlungen auf Plattformen wie Facebook, Twitter und Instagram zu teilen.
 
 ## Neue Funktionalität
 
