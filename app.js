@@ -218,62 +218,62 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Layered clothing recommendations based on temperature
 		if (temperature <= 0) {
 			recommendations.push(
-				"For freezing temperatures, consider wearing the following layers:",
-				"1. Base layer: Thermal underwear",
-				"2. Mid layer: Heavy sweater or fleece",
-				"3. Outer layer: Heavy coat",
-				"4. Accessories: Scarf, gloves, and a hat"
+				"Bei Gefriertemperaturen solltest du folgende Schichten tragen:",
+				"1. Basisschicht: Thermounterwäsche",
+				"2. Mittelschicht: Schwerer Pullover oder Fleece",
+				"3. Außenschicht: Schwerer Mantel",
+				"4. Zubehör: Schal, Handschuhe und eine Mütze"
 			);
 		} else if (temperature <= 10) {
 			recommendations.push(
-				"For cold temperatures, consider wearing the following layers:",
-				"1. Base layer: Long-sleeve shirt",
-				"2. Mid layer: Sweater or light fleece",
-				"3. Outer layer: Coat",
-				"4. Accessories: Gloves and a hat"
+				"Bei kalten Temperaturen solltest du folgende Schichten tragen:",
+				"1. Basisschicht: Langarmshirt",
+				"2. Mittelschicht: Pullover oder leichtes Fleece",
+				"3. Außenschicht: Mantel",
+				"4. Zubehör: Handschuhe und eine Mütze"
 			);
 		} else if (temperature <= 20) {
 			recommendations.push(
-				"For cool temperatures, consider wearing the following layers:",
-				"1. Base layer: T-shirt or long-sleeve shirt",
-				"2. Mid layer: Light jacket or sweater"
+				"Bei kühlen Temperaturen solltest du folgende Schichten tragen:",
+				"1. Basisschicht: T-Shirt oder Langarmshirt",
+				"2. Mittelschicht: Leichte Jacke oder Pullover"
 			);
 		} else {
 			recommendations.push(
-				"For warm temperatures, consider wearing the following layers:",
-				"1. Base layer: Light clothing such as a T-shirt and shorts"
+				"Bei warmen Temperaturen solltest du folgende Schichten tragen:",
+				"1. Basisschicht: Leichte Kleidung wie T-Shirt und Shorts"
 			);
 		}
 
 		// Wind recommendations
 		if (windSpeed > 20) {
 			recommendations.push(
-				"Due to high wind speeds, consider adding a windbreaker to your outfit."
+				"Bei starkem Wind solltest du eine Windjacke tragen."
 			);
 		}
 
 		// Precipitation recommendations
 		if (precipitationProbability > 50) {
 			recommendations.push(
-				"High chance of rain. Consider adding a rain jacket or carrying an umbrella."
+				"Hohe Regenwahrscheinlichkeit. Nimm eine Regenjacke oder einen Regenschirm mit."
 			);
 		}
 
 		// Humidity recommendations
 		if (humidity > 80) {
 			recommendations.push(
-				"High humidity. Wear breathable fabrics to stay comfortable."
+				"Hohe Luftfeuchtigkeit. Trage atmungsaktive Stoffe, um bequem zu bleiben."
 			);
 		}
 
 		// Cloud cover recommendations
 		if (cloudCover < 20) {
 			recommendations.push(
-				"Clear skies. Sunglasses might be necessary to protect your eyes."
+				"Klarer Himmel. Eine Sonnenbrille könnte notwendig sein, um deine Augen zu schützen."
 			);
 		} else if (cloudCover > 80) {
 			recommendations.push(
-				"Very cloudy. It might feel cooler than it is, so consider an extra layer."
+				"Sehr bewölkt. Es könnte kühler sein als es ist, also zieh eine extra Schicht in Betracht."
 			);
 		}
 
