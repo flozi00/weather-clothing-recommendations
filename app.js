@@ -135,7 +135,77 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	function displayWeatherData(data) {
+		// check which weather code is most common, while ignoring the first 6 and last 6 elements
+		const weatherCodes = data.hourly.weather_code.slice(6, -6);
+		// iterate over the weather codes and count the occurrences of each code
+		// Create a frequency map using reduce
+		const frequencyMap = weatherCodes.reduce((acc, curr) => {
+			acc[curr] = (acc[curr] || 0) + 1;
+			return acc;
+		}, {});
+
+		// Find the most frequent element
+		let maxCount = 0;
+		let mostFrequentElement;
+		for (const [element, count] of Object.entries(frequencyMap)) {
+			if (count > maxCount) {
+				maxCount = count;
+				mostFrequentElement = element;
+			}
+		}
+		/*
+        0	Clear sky
+        1, 2, 3	Mainly clear, partly cloudy, and overcast
+        45, 48	Fog and depositing rime fog
+        51, 53, 55	Drizzle: Light, moderate, and dense intensity
+        56, 57	Freezing Drizzle: Light and dense intensity
+        61, 63, 65	Rain: Slight, moderate and heavy intensity
+        66, 67	Freezing Rain: Light and heavy intensity
+        71, 73, 75	Snow fall: Slight, moderate, and heavy intensity
+        77	Snow grains
+        80, 81, 82	Rain showers: Slight, moderate, and violent
+        85, 86	Snow showers slight and heavy
+        95 *	Thunderstorm: Slight or moderate
+        96, 99 *	Thunderstorm with slight and heavy hail
+        */
+		const weatherCodeImages = {
+			0: "images/sun-7161716_640.jpg",
+			1: "images/sky-4122254_640.jpg",
+			2: "images/sky-4122254_640.jpg",
+			3: "images/sky-4122254_640.jpg",
+			45: "images/gods-gift-4590626_640.jpg",
+			48: "images/gods-gift-4590626_640.jpg",
+			51: "images/gods-gift-4590644_640.jpg",
+			53: "images/gods-gift-4590644_640.jpg",
+			55: "images/gods-gift-4590644_640.jpg",
+			56: "images/gods-gift-4590644_640.jpg",
+			57: "images/gods-gift-4590644_640.jpg",
+			61: "images/downpour-61916_640.jpg",
+			63: "images/downpour-61916_640.jpg",
+			65: "images/downpour-61916_640.jpg",
+			66: "images/rain-shower-8107683_640.jpg",
+			67: "images/rain-shower-8107683_640.jpg",
+			71: "images/heavy-snow-4968552_640.jpg",
+			73: "images/heavy-snow-4968552_640.jpg",
+			75: "images/heavy-snow-4968552_640.jpg",
+			77: "images/mountains-8136054_640.jpg",
+			80: "images/rain-shower-8107684_640.jpg",
+			81: "images/rain-shower-8107684_640.jpg",
+			82: "images/rain-shower-8107684_640.jpg",
+			85: "images/heavy-snow-4968549_640.jpg",
+			86: "images/heavy-snow-4968549_640.jpg",
+			95: "lightning-2702168_640.jpg",
+			96: "images/lightning-5039182_640.jpg",
+			99: "images/lightning-5039182_640.jpg",
+		};
+
 		const weatherDiv = document.createElement("div");
+		const backgroundImage = weatherCodeImages[mostFrequentElement];
+
+		weatherDiv.style.backgroundImage = `url(${backgroundImage})`;
+		weatherDiv.style.backgroundSize = "cover";
+		weatherDiv.style.backgroundPosition = "center";
+
 		weatherDiv.className = "weather";
 		weatherDiv.innerHTML = `
             <h2>Wetter an Ihrem Standort</h2>
@@ -245,87 +315,87 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Iterating over each area of the body and adding recommendations based on the weather data
 		// Head
 		if (maxTemperature < 8) {
-			recommendations.Kopfbereich.push("Mütze");
+			recommendations.Kopfbereich.push("Mütze 🧢");
 			if (maxTemperature < 3) {
-				recommendations.Kopfbereich.push("Schal");
+				recommendations.Kopfbereich.push("Schal 🧣");
 			}
 		}
 		if (maxTemperature > 25) {
-			recommendations.Kopfbereich = "Sonnenbrille";
+			recommendations.Kopfbereich = "Sonnenbrille 😎";
 		}
 
-		// Upper body
+		// Oberkörper
 		if (maxTemperature < 35) {
-			recommendations.Oberkörper.Schicht_1 = "Top";
+			recommendations.Oberkörper.Schicht_1 = "Top 👕";
 		}
 		if (maxTemperature < 30) {
-			recommendations.Oberkörper.Schicht_1 = "T-Shirt";
+			recommendations.Oberkörper.Schicht_1 = "T-Shirt 👕";
 		}
 		if (maxTemperature < 25) {
-			recommendations.Oberkörper.Schicht_1 = "Unterhemd";
-			recommendations.Oberkörper.Schicht_2 = "T-Shirt";
+			recommendations.Oberkörper.Schicht_1 = "Unterhemd 👕";
+			recommendations.Oberkörper.Schicht_2 = "T-Shirt 👕";
 		}
 		if (maxTemperature < 18) {
-			recommendations.Oberkörper.Schicht_1 = "Unterhemd";
-			recommendations.Oberkörper.Schicht_2 = "T-Shirt";
-			recommendations.Oberkörper.Schicht_3 = "Pullover";
-			recommendations.Oberkörper.Schicht_4 = "Weste";
+			recommendations.Oberkörper.Schicht_1 = "Unterhemd 👕";
+			recommendations.Oberkörper.Schicht_2 = "T-Shirt 👕";
+			recommendations.Oberkörper.Schicht_3 = "Pullover 🧥";
+			recommendations.Oberkörper.Schicht_4 = "Weste 🦺";
 		}
 		if (maxTemperature < 15) {
-			recommendations.Oberkörper.Schicht_1 = "Unterhemd";
-			recommendations.Oberkörper.Schicht_2 = "T-Shirt";
-			recommendations.Oberkörper.Schicht_3 = "Pullover / Sweatshirt Jacke";
-			recommendations.Oberkörper.Schicht_4 = "Jacke";
+			recommendations.Oberkörper.Schicht_1 = "Unterhemd 👕";
+			recommendations.Oberkörper.Schicht_2 = "T-Shirt 👕";
+			recommendations.Oberkörper.Schicht_3 = "Pullover / Sweatshirt Jacke 🧥";
+			recommendations.Oberkörper.Schicht_4 = "Jacke 🧥";
 		}
 		if (maxTemperature < 5) {
-			recommendations.Oberkörper.Schicht_1 = "Thermo-hemd";
-			recommendations.Oberkörper.Schicht_2 = "Langarmshirt";
-			recommendations.Oberkörper.Schicht_3 = "Pullover / Sweatshirt Jacke";
-			recommendations.Oberkörper.Schicht_4 = "Wintermantel";
+			recommendations.Oberkörper.Schicht_1 = "Thermo-hemd 🧣";
+			recommendations.Oberkörper.Schicht_2 = "Langarmshirt 👔";
+			recommendations.Oberkörper.Schicht_3 = "Pullover / Sweatshirt Jacke 🧥";
+			recommendations.Oberkörper.Schicht_4 = "Wintermantel 🧥";
 		}
 
-		// Lower body
+		// Unterkörper
 		if (maxTemperature < 50) {
-			recommendations.Unterkörper.Schicht_1 = "Unterhose";
-			recommendations.Unterkörper.Schicht_2 = "Shorts / Badehose";
+			recommendations.Unterkörper.Schicht_1 = "Unterhose 👙";
+			recommendations.Unterkörper.Schicht_2 = "Shorts / Badehose 🩳";
 		}
 		if (maxTemperature < 28) {
-			recommendations.Unterkörper.Schicht_1 = "Unterhose";
-			recommendations.Unterkörper.Schicht_2 = "Kurze Hose";
+			recommendations.Unterkörper.Schicht_1 = "Unterhose 👙";
+			recommendations.Unterkörper.Schicht_2 = "Kurze Hose 🩳";
 		}
 		if (maxTemperature < 20) {
-			recommendations.Unterkörper.Schicht_1 = "Unterhose";
-			recommendations.Unterkörper.Schicht_2 = "Lange Hose";
+			recommendations.Unterkörper.Schicht_1 = "Unterhose 👙";
+			recommendations.Unterkörper.Schicht_2 = "Lange Hose 👖";
 		}
 		if (maxTemperature < 5) {
-			recommendations.Unterkörper.Schicht_1 = "Thermo-Unterhose";
-			recommendations.Unterkörper.Schicht_2 = "Lange Hose";
+			recommendations.Unterkörper.Schicht_1 = "Thermo-Unterhose 🧦";
+			recommendations.Unterkörper.Schicht_2 = "Lange Hose 👖";
 		}
 
-		// Feet
+		// Füße
 		if (maxTemperature < 30) {
-			recommendations.Füße.Schicht_1 = "Sandalen";
+			recommendations.Füße.Schicht_1 = "Sandalen 👡";
 		}
 		if (maxTemperature < 25) {
-			recommendations.Füße.Schicht_1 = "Socken";
-			recommendations.Füße.Schicht_2 = "Sneakers";
+			recommendations.Füße.Schicht_1 = "Socken 🧦";
+			recommendations.Füße.Schicht_2 = "Sneakers 👟";
 			if (precipitationProbability > 60) {
-				recommendations.Füße.Schicht_2 = "Gummistiefel";
+				recommendations.Füße.Schicht_2 = "Gummistiefel 🥾";
 			} else if (precipitationProbability > 30) {
-				recommendations.Füße.Schicht_2 = "Regenfeste Schuhe";
+				recommendations.Füße.Schicht_2 = "Regenfeste Schuhe 🌧️";
 			}
 		}
 		if (maxTemperature < 5) {
-			recommendations.Füße.Schicht_1 = "Socken";
-			recommendations.Füße.Schicht_2 = "Winterschuhe";
+			recommendations.Füße.Schicht_1 = "Socken 🧦";
+			recommendations.Füße.Schicht_2 = "Winterschuhe 🥾";
 		}
 
-		// Hands
+		// Hände
 		if (maxTemperature < 5) {
-			recommendations.Hände.push("Handschuhe");
+			recommendations.Hände.push("Handschuhe 🧤");
 		}
 		if (precipitationProbability > 50) {
-			recommendations.Kopfbereich.push("Regenschirm");
+			recommendations.Kopfbereich.push("Regenschirm ☔");
 		}
 
 		// Create card-style UI
@@ -368,7 +438,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					for (let subCategory in items) {
 						if (items[subCategory]) {
 							const listItem = document.createElement("li");
-							listItem.textContent = `${subCategory}: ${items[subCategory]}`;
+							listItem.textContent = `    ${items[subCategory]}    `;
 							itemList.appendChild(listItem);
 						}
 					}
