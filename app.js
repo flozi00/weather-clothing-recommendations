@@ -243,59 +243,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			weatherData.hourly.wind_speed_10m.reduce((acc, val) => acc + val, 0) /
 			weatherData.hourly.wind_speed_10m.length;
 
-		/*
-        The criteria for the clothing recommendations should be based on the following factors:
-        - Temperature (min, max, average)
-        - Precipitation probability
-        - Wind speed (average)
-
-        Example of how the recommendation should be structured:
-        - Kopfbereich
-            - Mütze
-            - Sonnenbrille
-            - Schal
-        - Oberkörper
-            - Schicht 1
-                - Unterhemd
-                - Thermo-hemd
-            - Schicht 2
-                - Langarmshirt
-                - Shirt
-            - Schicht 3
-                - Pullover
-                - Jacke
-                - Hoodie
-            - Schicht 4
-                - Wintermantel
-                - Regenjacke
-                - Windfeste Jacke
-                - Leichte Jacke
-                - Weste
-        - Unterkörper
-            - Schicht 1
-                - Unterhose
-            - Schicht 2
-                - Lange Unterhose
-                - Hose
-            - Schicht 3
-                - Schnee-/Skihose
-                - Regenhose
-        - Füße
-            - Schicht 1
-                - Socken
-                    - Dünne Socken
-                    - Dicke Socken
-                    - Kurze Socken
-                    - Lange Socken
-            - Schicht 2
-                - Winterstiefel
-                - Regenfeste Schuhe
-                - Sandalen
-                - Gummistiefel
-        - Hände
-            - Handschuhe
-            - Regenschirm
-        */
 		// Initialize recommendations object
 		const recommendations = {
 			Kopfbereich: [],
@@ -310,11 +257,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			Hände: [],
 		};
 
-		// Iterating over each area of the body and adding recommendations based on the weather data
 		// Head
-		if (maxTemperature < 8) {
+		if (minTemperature < 8) {
 			recommendations.Kopfbereich.push("Mütze 🧢");
-			if (maxTemperature < 3) {
+			if (minTemperature < 3) {
 				recommendations.Kopfbereich.push("Schal 🧣");
 			}
 		}
@@ -329,27 +275,30 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (maxTemperature < 30) {
 			recommendations.Oberkörper.Schicht_1 = "T-Shirt 👕";
 		}
-		if (maxTemperature < 25) {
+		if (maxTemperature < 25 || minTemperature < 15) {
 			recommendations.Oberkörper.Schicht_1 = "Unterhemd 👕";
 			recommendations.Oberkörper.Schicht_2 = "T-Shirt 👕";
 		}
-		if (maxTemperature < 18) {
+		if (maxTemperature < 18 || minTemperature < 12) {
 			recommendations.Oberkörper.Schicht_1 = "Unterhemd 👕";
 			recommendations.Oberkörper.Schicht_2 = "T-Shirt 👕";
 			recommendations.Oberkörper.Schicht_3 = "Pullover 🧥";
 			recommendations.Oberkörper.Schicht_4 = "Weste 🦺";
 		}
-		if (maxTemperature < 15) {
+		if (maxTemperature < 15 || minTemperature < 10) {
 			recommendations.Oberkörper.Schicht_1 = "Unterhemd 👕";
 			recommendations.Oberkörper.Schicht_2 = "T-Shirt 👕";
 			recommendations.Oberkörper.Schicht_3 = "Pullover / Sweatshirt Jacke 🧥";
-			recommendations.Oberkörper.Schicht_4 = "Jacke 🧥";
+			recommendations.Oberkörper.Schicht_4 = "Draussen Jacke 🧥";
 		}
-		if (maxTemperature < 5) {
+		if (maxTemperature < 5 || minTemperature < 0) {
 			recommendations.Oberkörper.Schicht_1 = "Thermo-hemd 🧣";
 			recommendations.Oberkörper.Schicht_2 = "Langarmshirt 👔";
 			recommendations.Oberkörper.Schicht_3 = "Pullover / Sweatshirt Jacke 🧥";
 			recommendations.Oberkörper.Schicht_4 = "Wintermantel 🧥";
+		}
+		if (average_windSpeed > 5) {
+			recommendations.Oberkörper.Schicht_4 = "Winddichte Jacke 🧥";
 		}
 
 		// Unterkörper
@@ -357,15 +306,15 @@ document.addEventListener("DOMContentLoaded", () => {
 			recommendations.Unterkörper.Schicht_1 = "Unterhose 👙";
 			recommendations.Unterkörper.Schicht_2 = "Shorts / Badehose 🩳";
 		}
-		if (maxTemperature < 28) {
+		if (maxTemperature < 28 || minTemperature < 18) {
 			recommendations.Unterkörper.Schicht_1 = "Unterhose 👙";
 			recommendations.Unterkörper.Schicht_2 = "Kurze Hose 🩳";
 		}
-		if (maxTemperature < 20) {
+		if (maxTemperature < 20 || minTemperature < 10) {
 			recommendations.Unterkörper.Schicht_1 = "Unterhose 👙";
 			recommendations.Unterkörper.Schicht_2 = "Lange Hose 👖";
 		}
-		if (maxTemperature < 5) {
+		if (maxTemperature < 5 || minTemperature < 0) {
 			recommendations.Unterkörper.Schicht_1 = "Thermo-Unterhose 🧦";
 			recommendations.Unterkörper.Schicht_2 = "Lange Hose 👖";
 		}
@@ -374,20 +323,20 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (maxTemperature < 40) {
 			recommendations.Füße.Schicht_1 = "Sandalen 👡";
 		}
-		if (maxTemperature < 25) {
+		if (maxTemperature < 25 || minTemperature < 15) {
 			recommendations.Füße.Schicht_1 = "Socken 🧦";
 			recommendations.Füße.Schicht_2 = "Sneakers 👟";
 			if (precipitationProbability > 30) {
 				recommendations.Füße.Schicht_2 = "Regenfeste Schuhe 🌧️";
 			}
 		}
-		if (maxTemperature < 5) {
-			recommendations.Füße.Schicht_1 = "Socken 🧦";
+		if (maxTemperature < 5 || minTemperature < 0) {
+			recommendations.Füße.Schicht_1 = "Dicke Socken 🧦";
 			recommendations.Füße.Schicht_2 = "Winterschuhe 🥾";
 		}
 
 		// Hände
-		if (maxTemperature < 5) {
+		if (maxTemperature < 5 || minTemperature < 0) {
 			recommendations.Hände.push("Handschuhe 🧤");
 		}
 		if (precipitationProbability > 50) {
@@ -436,7 +385,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					for (let subCategory in items) {
 						if (items[subCategory]) {
 							const listItem = document.createElement("li");
-							listItem.textContent = `    ${items[subCategory]}    `;
+							listItem.textContent = `${items[subCategory]}`;
 							listItem.style.display = "block"; // Ensure each item is on its own line
 							itemList.appendChild(listItem);
 						}
