@@ -222,8 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	function displayClothingRecommendations(weatherData) {
-		// Minimum temperature in degrees Celsius for the day
-		const minTemperature = Math.min(...weatherData.hourly.temperature_2m);
 		// Maximum temperature in degrees Celsius for the day
 		const maxTemperature = Math.max(...weatherData.hourly.temperature_2m);
 		// Average temperature in degrees Celsius for the day
@@ -258,9 +256,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		};
 
 		// Head
-		if (minTemperature < 8) {
+		if (average_temperature < 8) {
 			recommendations.Kopfbereich.push("Mütze 🧢");
-			if (minTemperature < 3) {
+			if (average_temperature < 3) {
 				recommendations.Kopfbereich.push("Schal 🧣");
 			}
 		}
@@ -275,23 +273,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (maxTemperature < 30) {
 			recommendations.Oberkörper.Schicht_1 = "T-Shirt 👕";
 		}
-		if (maxTemperature < 25 || minTemperature < 15) {
+		if (maxTemperature < 25 || average_temperature < 15) {
 			recommendations.Oberkörper.Schicht_1 = "Unterhemd 👕";
 			recommendations.Oberkörper.Schicht_2 = "T-Shirt 👕";
 		}
-		if (maxTemperature < 18 || minTemperature < 12) {
+		if (maxTemperature < 18 || average_temperature < 12) {
 			recommendations.Oberkörper.Schicht_1 = "Unterhemd 👕";
 			recommendations.Oberkörper.Schicht_2 = "T-Shirt 👕";
 			recommendations.Oberkörper.Schicht_3 = "Pullover 🧥";
 			recommendations.Oberkörper.Schicht_4 = "Weste 🦺";
 		}
-		if (maxTemperature < 15 || minTemperature < 10) {
+		if (maxTemperature < 15 || average_temperature < 10) {
 			recommendations.Oberkörper.Schicht_1 = "Unterhemd 👕";
 			recommendations.Oberkörper.Schicht_2 = "T-Shirt 👕";
 			recommendations.Oberkörper.Schicht_3 = "Pullover / Sweatshirt Jacke 🧥";
 			recommendations.Oberkörper.Schicht_4 = "Draussen Jacke 🧥";
 		}
-		if (maxTemperature < 5 || minTemperature < 0) {
+		if (maxTemperature < 5 || average_temperature < 0) {
 			recommendations.Oberkörper.Schicht_1 = "Thermo-hemd 🧣";
 			recommendations.Oberkörper.Schicht_2 = "Langarmshirt 👔";
 			recommendations.Oberkörper.Schicht_3 = "Pullover / Sweatshirt Jacke 🧥";
@@ -306,15 +304,15 @@ document.addEventListener("DOMContentLoaded", () => {
 			recommendations.Unterkörper.Schicht_1 = "Unterhose 👙";
 			recommendations.Unterkörper.Schicht_2 = "Shorts / Badehose 🩳";
 		}
-		if (maxTemperature < 28 || minTemperature < 18) {
+		if (maxTemperature < 28 || average_temperature < 18) {
 			recommendations.Unterkörper.Schicht_1 = "Unterhose 👙";
 			recommendations.Unterkörper.Schicht_2 = "Kurze Hose 🩳";
 		}
-		if (maxTemperature < 20 || minTemperature < 10) {
+		if (maxTemperature < 20 || average_temperature < 10) {
 			recommendations.Unterkörper.Schicht_1 = "Unterhose 👙";
 			recommendations.Unterkörper.Schicht_2 = "Lange Hose 👖";
 		}
-		if (maxTemperature < 5 || minTemperature < 0) {
+		if (maxTemperature < 5 || average_temperature < 0) {
 			recommendations.Unterkörper.Schicht_1 = "Thermo-Unterhose 🧦";
 			recommendations.Unterkörper.Schicht_2 = "Lange Hose 👖";
 		}
@@ -323,20 +321,20 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (maxTemperature < 40) {
 			recommendations.Füße.Schicht_1 = "Sandalen 👡";
 		}
-		if (maxTemperature < 25 || minTemperature < 15) {
+		if (maxTemperature < 25 || average_temperature < 15) {
 			recommendations.Füße.Schicht_1 = "Socken 🧦";
 			recommendations.Füße.Schicht_2 = "Sneakers 👟";
 			if (precipitationProbability > 30) {
 				recommendations.Füße.Schicht_2 = "Regenfeste Schuhe 🌧️";
 			}
 		}
-		if (maxTemperature < 5 || minTemperature < 0) {
+		if (maxTemperature < 5 || average_temperature < 0) {
 			recommendations.Füße.Schicht_1 = "Dicke Socken 🧦";
 			recommendations.Füße.Schicht_2 = "Winterschuhe 🥾";
 		}
 
 		// Hände
-		if (maxTemperature < 5 || minTemperature < 0) {
+		if (maxTemperature < 5 || average_temperature < 0) {
 			recommendations.Hände.push("Handschuhe 🧤");
 		}
 		if (precipitationProbability > 50) {
