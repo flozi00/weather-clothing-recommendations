@@ -323,7 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 		if (maxTemperature < 25 || average_temperature < 15) {
 			recommendations.Füße.Schicht_1 = "Socken 🧦";
-			recommendations.Füße.Schicht_2 = "Sneakers 👟";
+			recommendations.Füße.Schicht_2 = "Halbschuhe / Sneakers 👟";
 			if (precipitationProbability > 30) {
 				recommendations.Füße.Schicht_2 = "Regenfeste Schuhe 🌧️";
 			}
